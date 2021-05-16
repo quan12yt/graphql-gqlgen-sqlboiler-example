@@ -7,5 +7,6 @@ import (
 )
 
 type UserService interface {
+	FindUserById(ctx context.Context, ID int64) (*models.User, error)
 	GetUsers(context.Context) ([]*models.User, error)
 }

@@ -8,6 +8,7 @@ type Users {
 
 type Query {
   users: [Users!]!
+  findById(ID: String!): Users!
 }
 
 input NewUser {
