@@ -9,7 +9,7 @@ import (
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph"
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/generated"
 	"github.com/quan12yt/graphql-sqlboiler-example/db"
-	"github.com/quan12yt/graphql-sqlboiler-example/internal/users"
+	"github.com/quan12yt/graphql-sqlboiler-example/internal/service/users"
 	"github.com/volatiletech/sqlboiler/boil"
 )
 

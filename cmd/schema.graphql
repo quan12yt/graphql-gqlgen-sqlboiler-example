@@ -16,6 +16,14 @@ input NewUser {
   email: String!
 }
 
+input UpdateUser {
+  id: String!
+  username: String!
+  email: String!
+}
+
 type Mutation {
   createUser(input: NewUser!): User!
+  updateUser(input: UpdateUser!): User!
+  deleteUser(id: String!): Boolean!
 }

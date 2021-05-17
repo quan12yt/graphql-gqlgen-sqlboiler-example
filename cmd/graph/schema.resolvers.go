@@ -10,16 +10,40 @@ import (
 
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/generated"
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/model"
-	"github.com/quan12yt/graphql-sqlboiler-example/internal/users"
+	"github.com/quan12yt/graphql-sqlboiler-example/internal/models"
+	"github.com/quan12yt/graphql-sqlboiler-example/internal/service/users"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	createdUser, err := r.sv.CreateUser(ctx, input)
+
+	if err != nil {
+		return nil, err
+	}
+	return mapUser(createdUser), nil
+}
+
+func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUser) (*model.User, error) {
+	updatedUser, err := r.sv.UpdateUser(ctx, input)
+
+	if err != nil {
+		return nil, err
+	}
+	return mapUser(updatedUser), nil
+}
+
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (bool, error) {
+	i, _ := strconv.ParseInt(id, 10, 64)
+	err := r.sv.DeleteUser(ctx, i)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	users, err := r.sv.GetUsers(ctx)
-	return helper.mapListUsers(users), err
+	return mapListUsers(users), err
 }
 
 func (r *queryResolver) FindByID(ctx context.Context, id string) (*model.User, error) {
@@ -27,7 +51,7 @@ func (r *queryResolver) FindByID(ctx context.Context, id string) (*model.User, e
 	//(ctx, err)
 	got, err := r.sv.FindUserById(ctx, i)
 	//dieIF(ctx, err)
-	user := helper.mapUser(got)
+	user := mapUser(got)
 	return user, err
 }
 
@@ -53,4 +77,19 @@ func NewSchemaConfig(us users.UserService) generated.Config {
 }
 func NewResolver(us users.UserService) *Resolver {
 	return &Resolver{us}
+}
+func mapUser(u *models.User) *model.User {
+	i := fmt.Sprintf("%d", u.ID)
+	return &model.User{
+		ID:       i,
+		Email:    u.Email,
+		Username: u.Username,
+	}
+}
+func mapListUsers(u []*models.User) []*model.User {
+	users := make([]*model.User, len(u))
+	for v, i := range u {
+		users[v] = mapUser(i)
+	}
+	return users
 }

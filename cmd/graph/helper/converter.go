@@ -16,7 +16,7 @@ func mapUser(u *models.User) *model.User {
 	}
 }
 
-func mapListUsers(u []*models.User) []*model.User {
+func mapListUser(u []*models.User) []*model.User {
 	users := make([]*model.User, len(u))
 	for v, i := range u {
 		users[v] = mapUser(i)
