@@ -4,6 +4,11 @@ package model
 
 type NewUser struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
-	Active   string `json:"active"`
+	Email    string `json:"email"`
+}
+
+type User struct {
+	ID       string `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
 }

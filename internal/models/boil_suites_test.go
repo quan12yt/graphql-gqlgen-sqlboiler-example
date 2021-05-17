@@ -12,83 +12,72 @@ import "testing"
 // It does NOT run each operation group in parallel.
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
-	t.Run("Categories", testCategories)
-	t.Run("Products", testProducts)
+	t.Run("Meetups", testMeetups)
 	t.Run("Users", testUsers)
 }
 
 func TestDelete(t *testing.T) {
-	t.Run("Categories", testCategoriesDelete)
-	t.Run("Products", testProductsDelete)
+	t.Run("Meetups", testMeetupsDelete)
 	t.Run("Users", testUsersDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
-	t.Run("Categories", testCategoriesQueryDeleteAll)
-	t.Run("Products", testProductsQueryDeleteAll)
+	t.Run("Meetups", testMeetupsQueryDeleteAll)
 	t.Run("Users", testUsersQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
-	t.Run("Categories", testCategoriesSliceDeleteAll)
-	t.Run("Products", testProductsSliceDeleteAll)
+	t.Run("Meetups", testMeetupsSliceDeleteAll)
 	t.Run("Users", testUsersSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
-	t.Run("Categories", testCategoriesExists)
-	t.Run("Products", testProductsExists)
+	t.Run("Meetups", testMeetupsExists)
 	t.Run("Users", testUsersExists)
 }
 
 func TestFind(t *testing.T) {
-	t.Run("Categories", testCategoriesFind)
-	t.Run("Products", testProductsFind)
+	t.Run("Meetups", testMeetupsFind)
 	t.Run("Users", testUsersFind)
 }
 
 func TestBind(t *testing.T) {
-	t.Run("Categories", testCategoriesBind)
-	t.Run("Products", testProductsBind)
+	t.Run("Meetups", testMeetupsBind)
 	t.Run("Users", testUsersBind)
 }
 
 func TestOne(t *testing.T) {
-	t.Run("Categories", testCategoriesOne)
-	t.Run("Products", testProductsOne)
+	t.Run("Meetups", testMeetupsOne)
 	t.Run("Users", testUsersOne)
 }
 
 func TestAll(t *testing.T) {
-	t.Run("Categories", testCategoriesAll)
-	t.Run("Products", testProductsAll)
+	t.Run("Meetups", testMeetupsAll)
 	t.Run("Users", testUsersAll)
 }
 
 func TestCount(t *testing.T) {
-	t.Run("Categories", testCategoriesCount)
-	t.Run("Products", testProductsCount)
+	t.Run("Meetups", testMeetupsCount)
 	t.Run("Users", testUsersCount)
 }
 
 func TestHooks(t *testing.T) {
-	t.Run("Categories", testCategoriesHooks)
-	t.Run("Products", testProductsHooks)
+	t.Run("Meetups", testMeetupsHooks)
 	t.Run("Users", testUsersHooks)
 }
 
 func TestInsert(t *testing.T) {
-	t.Run("Categories", testCategoriesInsert)
-	t.Run("Categories", testCategoriesInsertWhitelist)
-	t.Run("Products", testProductsInsert)
-	t.Run("Products", testProductsInsertWhitelist)
+	t.Run("Meetups", testMeetupsInsert)
+	t.Run("Meetups", testMeetupsInsertWhitelist)
 	t.Run("Users", testUsersInsert)
 	t.Run("Users", testUsersInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOne(t *testing.T) {}
+func TestToOne(t *testing.T) {
+	t.Run("MeetupToUserUsingUser", testMeetupToOneUserUsingUser)
+}
 
 // TestOneToOne tests cannot be run in parallel
 // or deadlocks can occur.
@@ -96,11 +85,15 @@ func TestOneToOne(t *testing.T) {}
 
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToMany(t *testing.T) {}
+func TestToMany(t *testing.T) {
+	t.Run("UserToMeetups", testUserToManyMeetups)
+}
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneSet(t *testing.T) {}
+func TestToOneSet(t *testing.T) {
+	t.Run("MeetupToUserUsingMeetups", testMeetupToOneSetOpUserUsingUser)
+}
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
@@ -116,7 +109,9 @@ func TestOneToOneRemove(t *testing.T) {}
 
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyAdd(t *testing.T) {}
+func TestToManyAdd(t *testing.T) {
+	t.Run("UserToMeetups", testUserToManyAddOpMeetups)
+}
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
@@ -127,31 +122,26 @@ func TestToManySet(t *testing.T) {}
 func TestToManyRemove(t *testing.T) {}
 
 func TestReload(t *testing.T) {
-	t.Run("Categories", testCategoriesReload)
-	t.Run("Products", testProductsReload)
+	t.Run("Meetups", testMeetupsReload)
 	t.Run("Users", testUsersReload)
 }
 
 func TestReloadAll(t *testing.T) {
-	t.Run("Categories", testCategoriesReloadAll)
-	t.Run("Products", testProductsReloadAll)
+	t.Run("Meetups", testMeetupsReloadAll)
 	t.Run("Users", testUsersReloadAll)
 }
 
 func TestSelect(t *testing.T) {
-	t.Run("Categories", testCategoriesSelect)
-	t.Run("Products", testProductsSelect)
+	t.Run("Meetups", testMeetupsSelect)
 	t.Run("Users", testUsersSelect)
 }
 
 func TestUpdate(t *testing.T) {
-	t.Run("Categories", testCategoriesUpdate)
-	t.Run("Products", testProductsUpdate)
+	t.Run("Meetups", testMeetupsUpdate)
 	t.Run("Users", testUsersUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
-	t.Run("Categories", testCategoriesSliceUpdateAll)
-	t.Run("Products", testProductsSliceUpdateAll)
+	t.Run("Meetups", testMeetupsSliceUpdateAll)
 	t.Run("Users", testUsersSliceUpdateAll)
 }

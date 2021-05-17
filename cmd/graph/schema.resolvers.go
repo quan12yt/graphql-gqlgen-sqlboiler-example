@@ -10,33 +10,25 @@ import (
 
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/generated"
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/model"
-	"github.com/quan12yt/graphql-sqlboiler-example/internal/models"
 	"github.com/quan12yt/graphql-sqlboiler-example/internal/users"
 )
 
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*models.User, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Users(ctx context.Context) ([]*models.User, error) {
-	return r.sv.GetUsers(ctx)
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	users, err := r.sv.GetUsers(ctx)
+	return helper.mapListUsers(users), err
 }
 
-func (r *queryResolver) FindByID(ctx context.Context, id string) (*models.User, error) {
-	id1, _ := strconv.ParseInt(id, 10, 64)
-	return r.sv.FindUserById(ctx, id1)
-}
-
-func (r *usersResolver) ID(ctx context.Context, obj *models.User) (string, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *usersResolver) Password(ctx context.Context, obj *models.User) (string, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *usersResolver) Active(ctx context.Context, obj *models.User) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) FindByID(ctx context.Context, id string) (*model.User, error) {
+	i, _ := strconv.ParseInt(id, 10, 64)
+	//(ctx, err)
+	got, err := r.sv.FindUserById(ctx, i)
+	//dieIF(ctx, err)
+	user := helper.mapUser(got)
+	return user, err
 }
 
 // Mutation returns generated.MutationResolver implementation.
@@ -45,12 +37,8 @@ func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResol
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-// Users returns generated.UsersResolver implementation.
-func (r *Resolver) Users() generated.UsersResolver { return &usersResolver{r} }
-
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
-type usersResolver struct{ *Resolver }
 
 // !!! WARNING !!!
 // The code below was going to be deleted when updating resolvers. It has been copied here so you have

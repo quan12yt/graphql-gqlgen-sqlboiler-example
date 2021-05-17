@@ -12,7 +12,7 @@ const (
 	host_port     = 5432
 	username      = "postgres"
 	password      = "quanpro99"
-	database_name = "QUAN_LY"
+	database_name = "demo_boiler_db"
 )
 
 func DBConnection() (db *sql.DB) {

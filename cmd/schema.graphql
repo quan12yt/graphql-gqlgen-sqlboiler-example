@@ -1,22 +1,21 @@
 
-type Users {
-  id: ID!
+
+type User {
+  id: String!
   username: String!
-  password: String!
-  active: String!
+  email: String!
 }
 
 type Query {
-  users: [Users!]!
-  findById(ID: String!): Users!
+  users: [User!]!
+  findById(ID: String!): User!
 }
 
 input NewUser {
   username: String!
-  password: String!
-  active: String!
+  email: String!
 }
 
 type Mutation {
-  createUser(input: NewUser!): Users!
+  createUser(input: NewUser!): User!
 }
