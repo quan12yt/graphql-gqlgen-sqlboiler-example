@@ -8,7 +8,7 @@ import (
 )
 
 type UserService interface {
-	FindUserById(ctx context.Context, ID int64) (*models.User, error)
+	FindUserById(ctx context.Context, ID int64) (*models.User, []*models.Meetup, error)
 	GetUsers(context.Context) ([]*models.User, error)
 	CreateUser(ctx context.Context, user model.NewUser) (*models.User, error)
 	UpdateUser(ctx context.Context, user model.UpdateUser) (*models.User, error)

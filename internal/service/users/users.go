@@ -9,6 +9,7 @@ import (
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/model"
 	"github.com/quan12yt/graphql-sqlboiler-example/internal/models"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 type UserServiceImpl struct {
@@ -26,12 +27,16 @@ func (u *UserServiceImpl) GetUsers(ctx context.Context) ([]*models.User, error) 
 	return users, err
 }
 
-func (u *UserServiceImpl) FindUserById(ctx context.Context, ID int64) (*models.User, error) {
+func (u *UserServiceImpl) FindUserById(ctx context.Context, ID int64) (*models.User, []*models.Meetup, error) {
 	user, err := models.FindUser(ctx, u.Db, ID)
 	if err != nil {
-		return nil, errors.New("cant find any user for the given id")
+		return nil, nil, errors.New("cant find any user for the given id")
 	}
-	return user, nil
+	meetups, err := models.Meetups(qm.Where("user_id=?", ID)).All(ctx, u.Db)
+	if err != nil {
+		return user, nil, err
+	}
+	return user, meetups, nil
 }
 
 func (u *UserServiceImpl) CreateUser(ctx context.Context, user model.NewUser) (*models.User, error) {

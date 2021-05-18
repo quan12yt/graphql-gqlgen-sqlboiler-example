@@ -4,6 +4,14 @@ type User {
   id: String!
   username: String!
   email: String!
+  meetups: [Meetup!]!
+}
+
+type Meetup{
+  id: String! 
+  names: String!
+  description: String!
+  
 }
 
 type Query {

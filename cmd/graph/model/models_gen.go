@@ -2,6 +2,12 @@
 
 package model
 
+type Meetup struct {
+	ID          string `json:"id"`
+	Names       string `json:"names"`
+	Description string `json:"description"`
+}
+
 type NewUser struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -14,7 +20,8 @@ type UpdateUser struct {
 }
 
 type User struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ID       string    `json:"id"`
+	Username string    `json:"username"`
+	Email    string    `json:"email"`
+	Meetups  []*Meetup `json:"meetups"`
 }

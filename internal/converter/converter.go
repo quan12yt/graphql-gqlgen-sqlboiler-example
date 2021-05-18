@@ -12,10 +12,3 @@ func mapToDBUser(u *model.NewUser) *models.User {
 	}
 }
 
-// func mapListUsers(u []*models.User) []*model.User {
-// 	users := make([]*model.User, len(u))
-// 	for v, i := range u {
-// 		users[v] = mapUser(i)
-// 	}
-// 	return users
-// }

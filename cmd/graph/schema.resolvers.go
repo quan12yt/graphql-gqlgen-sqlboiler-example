@@ -12,6 +12,7 @@ import (
 	"github.com/quan12yt/graphql-sqlboiler-example/cmd/graph/model"
 	"github.com/quan12yt/graphql-sqlboiler-example/internal/models"
 	"github.com/quan12yt/graphql-sqlboiler-example/internal/service/users"
+	log "github.com/sirupsen/logrus"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
@@ -24,12 +25,12 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 }
 
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUser) (*model.User, error) {
-	updatedUser, err := r.sv.UpdateUser(ctx, input)
+	createdUser, err := r.sv.UpdateUser(ctx, input)
 
 	if err != nil {
 		return nil, err
 	}
-	return mapUser(updatedUser), nil
+	return mapUser(createdUser), nil
 }
 
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (bool, error) {
@@ -48,10 +49,14 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 
 func (r *queryResolver) FindByID(ctx context.Context, id string) (*model.User, error) {
 	i, _ := strconv.ParseInt(id, 10, 64)
-	//(ctx, err)
-	got, err := r.sv.FindUserById(ctx, i)
-	//dieIF(ctx, err)
+	got, meetups, err := r.sv.FindUserById(ctx, i)
+	log.Println(meetups[0])
+
+	if err != nil {
+		return nil, err
+	}
 	user := mapUser(got)
+	user.Meetups = mapListMeetups(meetups)
 	return user, err
 }
 
@@ -92,4 +97,18 @@ func mapListUsers(u []*models.User) []*model.User {
 		users[v] = mapUser(i)
 	}
 	return users
+}
+func mapListMeetups(m []*models.Meetup) []*model.Meetup {
+	meetups := make([]*model.Meetup, len(m))
+
+	for _, i := range m {
+		id := fmt.Sprintf("%d", i.ID)
+		me := &model.Meetup{
+			ID:          id,
+			Description: i.Description,
+			Names:       i.Names,
+		}
+		meetups = append(meetups, me)
+	}
+	return meetups
 }
